@@ -9,7 +9,7 @@ var AhoCorasick = { };
       this.suffix = { };
       this.is_word = null;
       this.value = null;
-      this.data = null;
+      this.data = [ ];
 
    }
 
@@ -27,7 +27,7 @@ var AhoCorasick = { };
 
       if (word.length > 1) node.add(word.substring(1), data, original_word || word);
       else {
-         node.data = data;
+         node.data.push(data);
          node.is_word = true;
       }
 
@@ -111,12 +111,13 @@ var AhoCorasick = { };
          chr = string.charAt(i);
          next = current.suffix[chr];
 
-         if (callback && current && current.is_word) callback(current.value, current.data);
 
          if (next) {
             current = next;
          }
          else {
+
+            if (callback && current && current.is_word) callback(current.value, current.data);
 
             if (current.suffix_link) {
                i = i - (current.suffix_offset + 1); 

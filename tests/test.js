@@ -13,12 +13,12 @@ Tests['Test simple'] = function(test) {
 
    AhoCorasick.search('foab', trie, function(found_word, data) {
       test.equal(found_word, 'ab');
-      test.equal(data.word, 'ab');
+      test.equal(data[0].word, 'ab');
    });
 
    AhoCorasick.search('bcaa', trie, function(found_word, data) {
       test.equal(found_word, 'caa');
-      test.equal(data.word, 'caa');
+      test.equal(data[0].word, 'caa');
    });
 
    test.expect(4);
@@ -45,3 +45,44 @@ Tests['Picks out multiple words'] = function(test) {
    test.expect(find_list.length);
    test.done();
 };
+
+Tests['Match longest'] = function(test) {
+
+   var trie = new AhoCorasick.TrieNode();
+
+   ['foo', 'foo bar'].forEach(function(word) { trie.add(word); });
+
+   AhoCorasick.add_suffix_links(trie);
+
+   AhoCorasick.search('foo', trie, function(found_word, data) {
+      test.equal(found_word, 'foo');
+   });
+
+   AhoCorasick.search('foo bar', trie, function(found_word, data) {
+      test.equal(found_word, 'foo bar');
+   });
+
+   test.expect(2);
+   test.done();
+};
+
+Tests['Allow attaching multiple bits of data'] = function(test) {
+
+   var trie = new AhoCorasick.TrieNode();
+
+   trie.add('foo', 'data1');
+   trie.add('foo', 'data2');
+
+   AhoCorasick.add_suffix_links(trie);
+
+   AhoCorasick.search('foo', trie, function(found_word, data) {
+      test.equal(data[0], 'data1');
+      test.equal(data[1], 'data2');
+   });
+
+   test.expect(2);
+   test.done();
+};
+
+
+
