@@ -21,8 +21,7 @@ var AhoCorasick = require('aho-corasick.js'),
 AhoCorasick.add_suffix_links(trie);
 
 AhoCorasick.search('foab', trie, function(found_word, data) {
-   test.equal(found_word, 'ab');
-   test.equal(data[0].word, 'ab');
+   console.log(found_word, data);
 });
 ```
 
