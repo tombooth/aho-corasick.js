@@ -5,13 +5,16 @@
     "email" : "tombooth@gmail.com",
     "url"   : "http://thomasbooth.co.uk"
   },
-  "description"   : "",
+  "description"   : "A Javascript implementation of the Aho-Corasick algorithm",
   "version"       : "0.0.1",
   "main" : "./src/aho-corasick.js",
-  "engines": { "node": "0.6.x" },
+  "engines": { "node": "*" },
   "dependencies": {
   },
   "devDependencies": {
-     "nodeunit": "0.7.x"
+     "nodeunit": "*"
+  },
+  "scripts": {
+    "test": "nodeunit tests"
   }
 }
