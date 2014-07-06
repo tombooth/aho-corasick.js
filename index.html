@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Aho-corasick.js by tombooth</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Aho-corasick.js</h1>
+        <p>JavaScript implementation of the Aho-Corasick string matching algorithm</p>
+
+        <p class="view"><a href="https://github.com/tombooth/aho-corasick.js">View the Project on GitHub <small>tombooth/aho-corasick.js</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/tombooth/aho-corasick.js/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/tombooth/aho-corasick.js/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/tombooth/aho-corasick.js">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h2>
+<a name="about-" class="anchor" href="#about-"><span class="octicon octicon-link"></span></a>About <a href="https://travis-ci.org/tombooth/aho-corasick.js"><img src="https://travis-ci.org/tombooth/aho-corasick.js.png?branch=master" alt="Build Status"></a>
+</h2>
+
+<p>A Javascript implementation of the <a href="http://cisc-w09.isrl.kr/cgi-bin/TUBoard/db/seminar/upload/1183356194165246034173/p333-aho-corasick.pdf">Aho-Corasick algorithm</a>. It has one difference in that it will return the longest possible match.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<pre><code>$ npm install aho-corasick.js
+</code></pre>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">AhoCorasick</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'aho-corasick.js'</span><span class="p">),</span>
+    <span class="nx">trie</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AhoCorasick</span><span class="p">.</span><span class="nx">TrieNode</span><span class="p">();</span>
+
+<span class="p">[</span><span class="s1">'ab'</span><span class="p">,</span> <span class="s1">'bcr'</span><span class="p">,</span> <span class="s1">'caa'</span><span class="p">].</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">word</span><span class="p">)</span> <span class="p">{</span> <span class="nx">trie</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">word</span><span class="p">,</span> <span class="p">{</span> <span class="nx">word</span><span class="o">:</span> <span class="nx">word</span> <span class="p">});</span> <span class="p">});</span>
+
+<span class="nx">AhoCorasick</span><span class="p">.</span><span class="nx">add_suffix_links</span><span class="p">(</span><span class="nx">trie</span><span class="p">);</span>
+
+<span class="nx">AhoCorasick</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="s1">'foab'</span><span class="p">,</span> <span class="nx">trie</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">found_word</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">found_word</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+
+<h2>
+<a name="links" class="anchor" href="#links"><span class="octicon octicon-link"></span></a>Links</h2>
+
+<p>Coffeescript port by @hsujian <a href="https://github.com/hsujian/aho-corasick">https://github.com/hsujian/aho-corasick</a></p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/tombooth">tombooth</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
