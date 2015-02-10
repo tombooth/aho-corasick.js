@@ -121,6 +121,13 @@ var AhoCorasick = { };
             current_trie= main_trie
          }
       }
+      //remove 'paris' from 'paris hilton'
+      results=results.filter(function(a,i){
+         if(results[i+1] && results[i+1][0].match(a[0]) && results[i+1][0]!=a[0]){
+            return false
+         }
+         return true
+      })
       return results
    }
 
@@ -133,7 +140,6 @@ var AhoCorasick = { };
       options= options||{};
       var current = trie,
           chr, next;
-      var results=[];
 
       for (var i = 0, len = string.length; i <= len; i++) {
 
@@ -147,14 +153,13 @@ var AhoCorasick = { };
          else {
             //it found something..
             if (callback && current && current.is_word){
-              console.log(current)
                //ensure the next char is a word-boundary
                if(options.full_word){
                   if(chr === '' || chr.match(/[a-zA-Z0-9]/i) === null ){
-                     results.push([current.value, current.data]);
+                     callback(current.value, current.data);
                   }
                }else{
-                 results.push([current.value, current.data]);
+                 callback(current.value, current.data);
               }
             }
 
@@ -169,7 +174,7 @@ var AhoCorasick = { };
          }
 
       }
-      return callback(results)
+
    };
 
 

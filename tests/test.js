@@ -98,3 +98,22 @@ Tests['Match full_word only'] = function(test) {
    test.expect(1);
    test.done();
 }
+
+Tests['Search Sync'] = function(test) {
+
+   var trie = new AhoCorasick.TrieNode();
+
+   ["paris", "paris hilton"].forEach(function(word) { trie.add(word, true); });
+
+   var results=AhoCorasick.searchSync("he is with paris hilton", trie)
+   test.equal(results[0][0], "paris hilton")
+   test.equal(results[1], undefined)
+
+   var results=AhoCorasick.searchSync("he is in paris with paris hilton", trie)
+   test.equal(results[0][0], "paris")
+   test.equal(results[1][0], "paris hilton")
+   test.equal(results[2], undefined)
+
+   test.expect(5);
+   test.done();
+}
