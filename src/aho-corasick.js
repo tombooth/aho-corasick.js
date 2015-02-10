@@ -101,6 +101,30 @@ var AhoCorasick = { };
 
    };
 
+
+   AhoCorasick.searchSync = function(string, main_trie, options) {
+      options= options||{};
+      var current_trie= main_trie;
+      var results=[];
+      var chr;
+      //every char in the string
+      for (var i = 0, len = string.length; i <= len; i++) {
+         chr=string.charAt(i);
+
+         if(current_trie.suffix[chr]){//continue down trie
+            current_trie=current_trie.suffix[chr]
+            if(current_trie.is_word){//this is done
+               results.push([current_trie.value, current_trie.data])
+            }
+
+         }else{//start from the beginning again
+            current_trie= main_trie
+         }
+      }
+      return results
+   }
+
+
    AhoCorasick.search = function(string, trie, options, callback) {
       //allow lazy options paramater
       if(typeof options=="function"){
@@ -109,6 +133,7 @@ var AhoCorasick = { };
       options= options||{};
       var current = trie,
           chr, next;
+      var results=[];
 
       for (var i = 0, len = string.length; i <= len; i++) {
 
@@ -122,13 +147,14 @@ var AhoCorasick = { };
          else {
             //it found something..
             if (callback && current && current.is_word){
+              console.log(current)
                //ensure the next char is a word-boundary
                if(options.full_word){
                   if(chr === '' || chr.match(/[a-zA-Z0-9]/i) === null ){
-                     callback(current.value, current.data);
+                     results.push([current.value, current.data]);
                   }
                }else{
-                 callback(current.value, current.data);
+                 results.push([current.value, current.data]);
               }
             }
 
@@ -143,7 +169,7 @@ var AhoCorasick = { };
          }
 
       }
-
+      return callback(results)
    };
 
 
