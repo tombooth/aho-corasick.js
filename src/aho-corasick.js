@@ -106,7 +106,7 @@ var AhoCorasick = { };
       var current = trie,
           chr, next;
 
-      for (var i = 0, len = string.length; i < len; i++) {
+      for (var i = 0, len = string.length; i <= len; i++) {
 
          chr = string.charAt(i);
          next = current.suffix[chr];
@@ -120,7 +120,7 @@ var AhoCorasick = { };
             if (callback && current && current.is_word) callback(current.value, current.data);
 
             if (current.suffix_link) {
-               i = i - (current.suffix_offset + 1); 
+               i = i - (current.suffix_offset + 1);
                current = current.suffix_link;
             }
             else {
@@ -131,7 +131,7 @@ var AhoCorasick = { };
 
       }
 
-      if (callback && current && current.is_word) callback(current.value, current.data);
+     // if (callback && current && current.is_word) callback(current.value, current.data);
 
    };
 
