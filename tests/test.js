@@ -104,7 +104,8 @@ Tests['Search Sync'] = function(test) {
    var trie = new AhoCorasick.TrieNode();
 
    ["paris", "paris hilton"].forEach(function(word) { trie.add(word, true); });
-
+   //"paris hilton" =[paris, paris hilton] -> [paris hilton]
+   //"in paris with paris hilton" =[paris, paris hilton] -> [paris hilton]
    var results=AhoCorasick.searchSync("he is with paris hilton", trie)
    test.equal(results[0][0], "paris hilton")
    test.equal(results[1], undefined)
@@ -114,6 +115,14 @@ Tests['Search Sync'] = function(test) {
    test.equal(results[1][0], "paris hilton")
    test.equal(results[2], undefined)
 
-   test.expect(5);
+   var results=AhoCorasick.searchSync("he is in parisz with paris hilton", trie, {full_word:true})
+   test.equal(results[0][0], "paris hilton")
+   test.equal(results[1], undefined)
+
+   var results=AhoCorasick.searchSync("he is with paris hiltong", trie, {full_word:true})
+   test.equal(results[0][0], "paris")
+   test.equal(results[1], undefined)
+
+   test.expect(9);
    test.done();
 }

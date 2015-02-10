@@ -106,7 +106,7 @@ var AhoCorasick = { };
       options= options||{};
       var current_trie= main_trie;
       var results=[];
-      var chr;
+      var chr, next_chr;
       //every char in the string
       for (var i = 0, len = string.length; i <= len; i++) {
          chr=string.charAt(i);
@@ -114,7 +114,15 @@ var AhoCorasick = { };
          if(current_trie.suffix[chr]){//continue down trie
             current_trie=current_trie.suffix[chr]
             if(current_trie.is_word){//this is done
-               results.push([current_trie.value, current_trie.data])
+               //if it requires the next character is a word boundary
+               if(options.full_word){
+                  next_chr= string.charAt(i+1)
+                  if(next_chr===undefined || !next_chr.match(/[a-zA-Z0-9]/i) ){ //next_chr is not a letter or number
+                     results.push([current_trie.value, current_trie.data])
+                  }
+               }else{
+                 results.push([current_trie.value, current_trie.data])
+              }
             }
 
          }else{//start from the beginning again

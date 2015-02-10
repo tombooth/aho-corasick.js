@@ -34,6 +34,14 @@ AhoCorasick.search('foobarzz', trie, {full_word:true}, function(found_word, data
    //empty
 });
 ```
+a synchronous version of search:
+```javascript
+['paris hilton', 'paris'].forEach(function(word) { trie.add(word, true); });
+var results=AhoCorasick.searchSync("he is with paris hilton", trie, {full_word:true})
+//['paris hilton']
+var results=AhoCorasick.searchSync("he is in paris with paris hilton", trie, {full_word:true})
+//['paris', 'paris hilton']
+```
 
 Links
 -------------------------------------
