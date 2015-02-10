@@ -25,6 +25,16 @@ AhoCorasick.search('foab', trie, function(found_word, data) {
 });
 ```
 
+to match full words only (match 'foobar' but not 'foobarzz'):
+```javascript
+['foobar'].forEach(function(word) { trie.add(word, { word: word }); });
+
+AhoCorasick.search('foobarzz', trie, {full_word:true}, function(found_word, data) {
+   console.log(found_word, data);
+   //empty
+});
+```
+
 Links
 -------------------------------------
 Coffeescript port by @hsujian https://github.com/hsujian/aho-corasick
