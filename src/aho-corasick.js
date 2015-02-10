@@ -101,12 +101,16 @@ var AhoCorasick = { };
 
    };
 
-   AhoCorasick.search = function(string, trie, callback) {
-
+   AhoCorasick.search = function(string, trie, options, callback) {
+      //allow lazy options paramater
+      if(typeof options=="function"){
+         callback= options;
+      }
+      options= options||{};
       var current = trie,
           chr, next;
 
-      for (var i = 0, len = string.length; i < len; i++) {
+      for (var i = 0, len = string.length; i <= len; i++) {
 
          chr = string.charAt(i);
          next = current.suffix[chr];
@@ -116,11 +120,20 @@ var AhoCorasick = { };
             current = next;
          }
          else {
-
-            if (callback && current && current.is_word) callback(current.value, current.data);
+            //it found something..
+            if (callback && current && current.is_word){
+               //ensure the next char is a word-boundary
+               if(options.full_word){
+                  if(chr === '' || chr.match(/[a-zA-Z0-9]/i) === null ){
+                     callback(current.value, current.data);
+                  }
+               }else{
+                 callback(current.value, current.data);
+              }
+            }
 
             if (current.suffix_link) {
-               i = i - (current.suffix_offset + 1); 
+               i = i - (current.suffix_offset + 1);
                current = current.suffix_link;
             }
             else {
@@ -130,8 +143,6 @@ var AhoCorasick = { };
          }
 
       }
-
-      if (callback && current && current.is_word) callback(current.value, current.data);
 
    };
 

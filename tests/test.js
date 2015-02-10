@@ -85,4 +85,16 @@ Tests['Allow attaching multiple bits of data'] = function(test) {
 };
 
 
+Tests['Match full_word only'] = function(test) {
 
+   var trie = new AhoCorasick.TrieNode();
+
+   ['foo', 'bar'].forEach(function(word) { trie.add(word, { word: word } ); });
+
+   AhoCorasick.search('fooz are bar ', trie, {full_word:true}, function(found_word, data) {
+      test.equal(data[0].word, 'bar');
+   });
+
+   test.expect(1);
+   test.done();
+}
