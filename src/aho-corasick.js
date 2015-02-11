@@ -107,13 +107,15 @@ var AhoCorasick = { };
       var current_trie= main_trie;
       var results=[];
       var chr, next_chr;
+      var began_at=0
+      var i=0;
       //every char in the string
-      for (var i = 0, len = string.length; i <= len; i++) {
+      while(i<=string.length){
          chr=string.charAt(i);
-
          if(current_trie.suffix[chr]){//continue down trie
             current_trie=current_trie.suffix[chr]
             if(current_trie.is_word){//this is done
+
                //if it requires the next character is a word boundary
                if(options.full_word){
                   next_chr= string.charAt(i+1)
@@ -123,11 +125,14 @@ var AhoCorasick = { };
                }else{
                  results.push([current_trie.value, current_trie.data])
               }
-            }
 
-         }else{//start from the beginning again
-            current_trie= main_trie
+            }
+         }else{
+            current_trie= main_trie //start from the root trie again
+            i=began_at+1 // and the first non-root-attempted char
+            began_at=i
          }
+         i=i+1
       }
       //remove 'paris' from 'paris hilton'
       results=results.filter(function(a,i){
