@@ -103,41 +103,42 @@ var AhoCorasick = { };
 
 
    AhoCorasick.searchSync = function(string, main_trie, options) {
-      if(typeof string!="string"){
-         return []
-      }
       options= options||{};
       var current_trie= main_trie;
       var results=[];
       var chr, next_chr;
       var dead_word=false;
       var i=0;
+      if(typeof string!="string"){
+         return []
+      }
       //every char in the string
       while(i<=string.length){
-         chr=string.charAt(i);
-         //we should ignore the rest of the characters in the word..
-         if(chr!="" && current_trie && !current_trie.suffix[chr]){
-            current_trie=null
-         }
-         if(current_trie){//continue down trie
-            current_trie=current_trie.suffix[chr]
-            if(current_trie && current_trie.is_word){//this is maybe done now
-               if(!options.full_word){
-                 results.push([current_trie.value, current_trie.data])
-               }else{ //it requires the next character is a word boundary
-                 //ensure that next_chr is a space or something..
-                 next_chr= string.charAt(i+1)
-                 if(next_chr=="" || next_chr.match(/[^a-zA-Z0-9]/i) ){
-                   results.push([current_trie.value, current_trie.data])
-                 }
-              }
-           }
-         }
-         //new word is beginning
-         if(!current_trie && chr.match(/[^a-zA-Z0-9]/i)){
-            current_trie= main_trie
-         }
-         i=i+1
+        chr=string.charAt(i);
+        //update to trie to next character.
+        if(current_trie){
+          current_trie= current_trie.suffix[chr]
+        }
+         //try to end now..
+        if(current_trie && current_trie.is_word){//this is maybe done now
+
+          if(!options.full_word){
+            results.push([current_trie.value, current_trie.data])
+          }else{
+            //it requires the next character is a word boundary
+            next_chr= string.charAt(i+1)
+            //ensure that next_chr is a space or something..
+            if(next_chr=="" || next_chr.match(/[^a-zA-Z0-9]/i) ){
+              results.push([current_trie.value, current_trie.data])
+            }
+          }
+
+        }
+       //a new word is a new begining..
+       if(!current_trie && chr.match(/[^a-zA-Z0-9]/i)){
+          current_trie= main_trie
+       }
+       i=i+1
       }
       //remove 'paris' from 'paris hilton'
       results=results.filter(function(a,i){
