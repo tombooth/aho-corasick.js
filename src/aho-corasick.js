@@ -103,34 +103,39 @@ var AhoCorasick = { };
 
 
    AhoCorasick.searchSync = function(string, main_trie, options) {
+      if(typeof string!="string"){
+         return []
+      }
       options= options||{};
       var current_trie= main_trie;
       var results=[];
       var chr, next_chr;
-      var began_at=0
+      var dead_word=false;
       var i=0;
       //every char in the string
       while(i<=string.length){
          chr=string.charAt(i);
-         if(current_trie.suffix[chr]){//continue down trie
+         //we should ignore the rest of the characters in the word..
+         if(chr!="" && current_trie && !current_trie.suffix[chr]){
+            current_trie=null
+         }
+         if(current_trie){//continue down trie
             current_trie=current_trie.suffix[chr]
-            if(current_trie.is_word){//this is done
-
-               //if it requires the next character is a word boundary
-               if(options.full_word){
-                  next_chr= string.charAt(i+1)
-                  if(next_chr===undefined || !next_chr.match(/[a-zA-Z0-9]/i) ){ //next_chr is not a letter or number
-                     results.push([current_trie.value, current_trie.data])
-                  }
-               }else{
+            if(current_trie && current_trie.is_word){//this is maybe done now
+               if(!options.full_word){
                  results.push([current_trie.value, current_trie.data])
+               }else{ //it requires the next character is a word boundary
+                 //ensure that next_chr is a space or something..
+                 next_chr= string.charAt(i+1)
+                 if(next_chr=="" || next_chr.match(/[^a-zA-Z0-9]/i) ){
+                   results.push([current_trie.value, current_trie.data])
+                 }
               }
-
-            }
-         }else{
-            current_trie= main_trie //start from the root trie again
-            i=began_at+1 // and the first non-root-attempted char
-            began_at=i
+           }
+         }
+         //new word is beginning
+         if(!current_trie && chr.match(/[^a-zA-Z0-9]/i)){
+            current_trie= main_trie
          }
          i=i+1
       }
