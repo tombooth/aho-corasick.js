@@ -1,34 +1,30 @@
+#efficiently find lookup words in a text
 
-
-About [![Build Status](https://travis-ci.org/tombooth/aho-corasick.js.png?branch=master)](https://travis-ci.org/tombooth/aho-corasick.js)
--------------------------------------
-A Javascript implementation of the [Aho-Corasick algorithm](http://cisc-w09.isrl.kr/cgi-bin/TUBoard/db/seminar/upload/1183356194165246034173/p333-aho-corasick.pdf). It has one difference in that it will return the longest possible match.
+the [Aho-Corasick algorithm](https://en.wikipedia.org/wiki/Aho%E2%80%93Corasick_string_matching_algorithm) is a trie-based method to look-up a list of words efficiently in text. This algorithm makes certain assumptions about language, and that you are looking for full words in natural language.
 
 Installation
 -------------------------------------
 ```
-$ npm install aho-corasick.js
+$ npm install aho_corasick
 ```
 
 Usage
 -------------------------------------
 ```javascript
-var AhoCorasick = require('aho-corasick.js'),
+var AhoCorasick = require('aho_corasick'),
     trie = new AhoCorasick.TrieNode();
 
-['ab', 'bcr', 'caa'].forEach(function(word) { trie.add(word, { word: word }); });
+['paris', 'paris hilton', 'germany', 'ny'].forEach(function(word) { trie.add(word, {id:"id"} ); });
 
-AhoCorasick.add_suffix_links(trie);
+var results=AhoCorasick.searchSync("i went to germany with paris hilton", trie, {full_word:true})
+//[['germany'.{id:"id"}], ['paris hilton', {id:"id"}] ]
 
-AhoCorasick.search('foab', trie, function(found_word, data) {
-   console.log(found_word, data);
-});
-```
 
-Links
+Misc
 -------------------------------------
-Coffeescript port by @hsujian https://github.com/hsujian/aho-corasick
+Forked from tombooth's async version https://github.com/tombooth/aho-corasick.js
 
+MIT
 
 
 

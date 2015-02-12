@@ -85,4 +85,44 @@ Tests['Allow attaching multiple bits of data'] = function(test) {
 };
 
 
+Tests['Match full_word only'] = function(test) {
 
+   var trie = new AhoCorasick.TrieNode();
+
+   ['foo', 'bar'].forEach(function(word) { trie.add(word, { word: word } ); });
+
+   AhoCorasick.search('fooz are bar ', trie, {full_word:true}, function(found_word, data) {
+      test.equal(data[0].word, 'bar');
+   });
+
+   test.expect(1);
+   test.done();
+}
+
+Tests['Search Sync'] = function(test) {
+
+   var trie = new AhoCorasick.TrieNode();
+
+   ["paris", "paris hilton"].forEach(function(word) { trie.add(word, true); });
+   //"paris hilton" =[paris, paris hilton] -> [paris hilton]
+   //"in paris with paris hilton" =[paris, paris hilton] -> [paris hilton]
+   var results=AhoCorasick.searchSync("he is with paris hilton", trie)
+   test.equal(results[0][0], "paris hilton")
+   test.equal(results[1], undefined)
+
+   var results=AhoCorasick.searchSync("he is in paris with paris hilton", trie)
+   test.equal(results[0][0], "paris")
+   test.equal(results[1][0], "paris hilton")
+   test.equal(results[2], undefined)
+
+   var results=AhoCorasick.searchSync("he is in parisz with paris hilton", trie, {full_word:true})
+   test.equal(results[0][0], "paris hilton")
+   test.equal(results[1], undefined)
+
+   var results=AhoCorasick.searchSync("he is with paris hiltong", trie, {full_word:true})
+   test.equal(results[0][0], "paris")
+   test.equal(results[1], undefined)
+
+   test.expect(9);
+   test.done();
+}
