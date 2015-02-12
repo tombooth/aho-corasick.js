@@ -1,19 +1,23 @@
-
-{ "name"          : "aho-corasick.js",
-  "author"        : {
-    "name"  : "Tom Booth",
-    "email" : "tombooth@gmail.com",
-    "url"   : "http://thomasbooth.co.uk"
-  },
-  "description"   : "A Javascript implementation of the Aho-Corasick algorithm",
-  "version"       : "0.0.1",
-  "main" : "./src/aho-corasick.js",
-  "engines": { "node": "*" },
-  "dependencies": {
-  },
+{
+  "author": "Spencer Kelly <spencerwater@gmail.com> (http://spencermounta.in)",
+  "name": "aho_corasick",
+  "description": "trie-based string matching in javascript",
+  "version": "0.0.1",
+  "main": "index.js",
+  "engines": [
+      "node >= 0.3.6"
+  ],
+  "dependencies": {},
+  "contributors":[{
+    "name":"Tom Booth",
+    "email":"tombooth@gmail.com"
+  }],
+  "keywords": [],
   "devDependencies": {
      "nodeunit": "*"
   },
+  "bin": {},
+  "license": "MIT",
   "scripts": {
     "test": "nodeunit tests"
   }
